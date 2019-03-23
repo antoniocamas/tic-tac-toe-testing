@@ -30,53 +30,12 @@ public class TicTacToeWebTest {
 	@Parameters
 	public static Collection<Object[]> data(){
 		
-		String player1Name = "Snake";
-		String player2Name = "Apple";
-
-		List<Movement> player2Wins4 = new ArrayList<Movement>();
-		player2Wins4.add(new Movement(0, player1Name, false, null));
-		player2Wins4.add(new Movement(1, player2Name, false, null));
-		player2Wins4.add(new Movement(2, player1Name, false, null));
-		player2Wins4.add(new Movement(4, player2Name, false, null));
-		player2Wins4.add(new Movement(3, player1Name, false, null));
-		player2Wins4.add(new Movement(7, player2Name, true, Movement.WINPOSITIONS[4]));
-		
-		List<Movement> player2Wins5 = new ArrayList<Movement>();
-		player2Wins5.add(new Movement(0, player1Name, false, null));
-		player2Wins5.add(new Movement(2, player2Name, false, null));
-		player2Wins5.add(new Movement(1, player1Name, false, null));
-		player2Wins5.add(new Movement(5, player2Name, false, null));
-		player2Wins5.add(new Movement(3, player1Name, false, null));
-		player2Wins5.add(new Movement(4, player2Name, false, null));
-		player2Wins5.add(new Movement(7, player1Name, false, null));
-		player2Wins5.add(new Movement(8, player2Name, true, Movement.WINPOSITIONS[5]));
-		
-		List<Movement> player1Wins3 = new ArrayList<Movement>();
-		player1Wins3.add(new Movement(0, player1Name, false, null));
-		player1Wins3.add(new Movement(2, player2Name, false, null));
-		player1Wins3.add(new Movement(1, player1Name, false, null));
-		player1Wins3.add(new Movement(5, player2Name, false, null));
-		player1Wins3.add(new Movement(3, player1Name, false, null));
-		player1Wins3.add(new Movement(4, player2Name, false, null));
-		player1Wins3.add(new Movement(8, player1Name, false, null));
-		player1Wins3.add(new Movement(7, player2Name, false, null));
-		player1Wins3.add(new Movement(6, player1Name, true,  Movement.WINPOSITIONS[3]));
-		
-		List<Movement> player12Draw = new ArrayList<Movement>();
-		player12Draw.add(new Movement(0, player1Name, false, null));
-		player12Draw.add(new Movement(8, player2Name, false, null));
-		player12Draw.add(new Movement(5, player1Name, false, null));
-		player12Draw.add(new Movement(3, player2Name, false, null));
-		player12Draw.add(new Movement(6, player1Name, false, null));
-		player12Draw.add(new Movement(2, player2Name, false, null));
-		player12Draw.add(new Movement(4, player1Name, false, null));
-		player12Draw.add(new Movement(7, player2Name, false, null));
-		player12Draw.add(new Movement(1, player1Name, true,  null));
+		TestScenarios scenarios = new TestScenarios();
 		
 	    Object[][] data = {
-	    	{ player2Wins4 },
-	        { player2Wins5 },
-	    	{ player12Draw }
+	    	{ scenarios.player2Wins4 },
+	        { scenarios.player1Wins3 },
+	    	{ scenarios.player12Draw }
 	    };
 	    
 	    return Arrays.asList(data);
@@ -122,17 +81,15 @@ public class TicTacToeWebTest {
 		
 		drivers.get(0).findElement(By.id("nickname")).sendKeys(movements.get(0).label);
 		drivers.get(0).findElement(By.id("startBtn")).click();
-		//Thread.sleep(2000);
+
 		drivers.get(1).findElement(By.id("nickname")).sendKeys(movements.get(1).label);
 		drivers.get(1).findElement(By.id("startBtn")).click();
-		//Thread.sleep(2000);
 		
 		int nextTurn = 1;
 		
 		for (Movement movement : movements) {
 			int thisTurn = nextTurn == 1 ? 0 : 1;
 			drivers.get(thisTurn).findElement(By.id("cell-" + movement.pos)).click();
-			//Thread.sleep(2000);
 			
 			if (movement.isWinner()) {
 				assertThat(

@@ -31,56 +31,16 @@ public class TicTacToeGameTest {
 	
 	@Parameters
 	public static Collection<Object[]> data(){
-
-		List<Movement> player2Wins4 = new ArrayList<Movement>();
-		player2Wins4.add(new Movement(0, "_", false, null));
-		player2Wins4.add(new Movement(1, "0", false, null));
-		player2Wins4.add(new Movement(2, "x", false, null));
-		player2Wins4.add(new Movement(4, "0", false, null));
-		player2Wins4.add(new Movement(3, "x", false, null));
-		player2Wins4.add(new Movement(7, "0", true, Movement.WINPOSITIONS[4]));
 		
-		List<Movement> player2Wins5 = new ArrayList<Movement>();
-		player2Wins5.add(new Movement(0, "x", false, null));
-		player2Wins5.add(new Movement(2, "0", false, null));
-		player2Wins5.add(new Movement(1, "x", false, null));
-		player2Wins5.add(new Movement(5, "0", false, null));
-		player2Wins5.add(new Movement(3, "x", false, null));
-		player2Wins5.add(new Movement(4, "0", false, null));
-		player2Wins5.add(new Movement(7, "x", false, null));
-		player2Wins5.add(new Movement(8, "0", true, Movement.WINPOSITIONS[5]));
-		
-		List<Movement> player1Wins3 = new ArrayList<Movement>();
-		player1Wins3.add(new Movement(0, "x", false, null));
-		player1Wins3.add(new Movement(2, "0", false, null));
-		player1Wins3.add(new Movement(1, "x", false, null));
-		player1Wins3.add(new Movement(5, "0", false, null));
-		player1Wins3.add(new Movement(3, "x", false, null));
-		player1Wins3.add(new Movement(4, "0", false, null));
-		player1Wins3.add(new Movement(8, "x", false, null));
-		player1Wins3.add(new Movement(7, "0", false, null));
-		player1Wins3.add(new Movement(6, "x", true,  Movement.WINPOSITIONS[3]));
-		
-		List<Movement> player12Draw = new ArrayList<Movement>();
-		player12Draw.add(new Movement(0, "x", false, null));
-		player12Draw.add(new Movement(8, "0", false, null));
-		player12Draw.add(new Movement(5, "x", false, null));
-		player12Draw.add(new Movement(3, "0", false, null));
-		player12Draw.add(new Movement(6, "x", false, null));
-		player12Draw.add(new Movement(2, "0", false, null));
-		player12Draw.add(new Movement(4, "x", false, null));
-		player12Draw.add(new Movement(7, "0", false, null));
-		player12Draw.add(new Movement(1, "x", true,  null));
-		
+		TestScenarios scenarios = new TestScenarios();
 	    Object[][] data = {
-	    	{ player2Wins4 },
-	    	{ player2Wins5 },
-	    	{ player12Draw }
+	    	{ scenarios.player2Wins4 },
+	        { scenarios.player1Wins3 },
+	    	{ scenarios.player12Draw }
 	    };
 	    
 	    return Arrays.asList(data);
-	}
-	
+	}	
 	@Parameter(0) public List<Movement> movements;
 
 	
@@ -97,7 +57,7 @@ public class TicTacToeGameTest {
 		game.addConnection(c2);
 		
 		List<Player> players = new CopyOnWriteArrayList<>();
-		players.add(new Player(0, "Snake", "x"));
+		players.add(new Player(0, movements.get(0).label, "x"));
 				
 		//When
 		game.addPlayer(players.get(0));
@@ -107,7 +67,7 @@ public class TicTacToeGameTest {
 		verify(c2).sendEvent(eq(EventType.JOIN_GAME), eq(players));
 		
 		//When
-		players.add(new Player(1, "Apple", "o"));
+		players.add(new Player(1, movements.get(1).label, "o"));
 		game.addPlayer(players.get(1));
 		
 		//Then
